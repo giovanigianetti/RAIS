@@ -1,0 +1,18 @@
+{
+  "linhas_subclasse": 1324,
+  "anos": [
+    2024
+  ],
+  "territorios": [
+    "Brasil"
+  ],
+  "secoes": 21,
+  "divisoes": 87,
+  "grupos": 281,
+  "classes": 668,
+  "subclasses": 1319,
+  "vinculos_total": 72731070,
+  "massa_salarial_estimada": 202243326880.69,
+  "salario_ponderado_nacional": 2780.7005572816406,
+  "indicador_salarial": "remuneração mediana nominal mensal por subclasse; agregações calculadas por média ponderada por vínculos"
+}

@@ -4,253 +4,431 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard Salários 2024 | RAIS por Atividade Econômica</title>
-  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <p class="eyebrow">RAIS 2024 • CNAE 2.0 • Remuneração mediana nominal</p>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Painel de filtros">
+      <div class="eyebrow">RAIS • mercado de trabalho formal</div>
       <h1>Dashboard Salários 2024</h1>
-      <p class="subtitle">Avaliação de remuneração, vínculos, massa salarial e priorização exploratória de atividades econômicas para políticas públicas de desenvolvimento regional.</p>
-    </div>
-    <div class="topbar-actions">
-      <button id="btnReset" class="btn secondary">Limpar filtros</button>
-      <button id="btnExportRanking" class="btn primary">Baixar ranking</button>
-    </div>
-  </header>
+      <p class="muted">
+        Avaliação da remuneração mediana por atividade econômica para diagnósticos de diversificação produtiva e políticas públicas.
+      </p>
 
-  <div class="layout">
-    <aside class="sidebar" aria-label="Filtros do dashboard">
-      <h2>Filtros</h2>
+      <section class="filter-card">
+        <h2>Filtros principais</h2>
+        <div class="control-group">
+          <label for="yearSelect">Ano</label>
+          <select id="yearSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="territorySelect">Território / fundo / região</label>
+          <select id="territorySelect"></select>
+          <small id="territoryHint">A base enviada contém apenas a referência nacional.</small>
+        </div>
+        <div class="control-group">
+          <label for="levelSelect">Nível CNAE de análise</label>
+          <select id="levelSelect">
+            <option value="secao">Seção</option>
+            <option value="divisao">Divisão</option>
+            <option value="grupo">Grupo</option>
+            <option value="classe">Classe</option>
+            <option value="subclasse" selected>Subclasse</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="salaryIndicator">Indicador salarial</label>
+          <select id="salaryIndicator">
+            <option value="remuneracao_mediana" selected>Remuneração mediana nominal</option>
+          </select>
+          <small>Não há média salarial na base enviada. As agregações usam ponderação por vínculos.</small>
+        </div>
+      </section>
 
-      <label>Ano
-        <select id="filterAno"></select>
-      </label>
+      <section class="filter-card">
+        <h2>Hierarquia CNAE</h2>
+        <div class="control-group">
+          <label for="secaoSelect">Seção</label>
+          <select id="secaoSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="divisaoSelect">Divisão</label>
+          <select id="divisaoSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="grupoSelect">Grupo</label>
+          <select id="grupoSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="classeSelect">Classe</label>
+          <select id="classeSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="subclasseSelect">Subclasse</label>
+          <select id="subclasseSelect"></select>
+        </div>
+      </section>
 
-      <label>Unidade territorial / referência
-        <select id="filterTerritorio"></select>
-      </label>
+      <section class="filter-card">
+        <h2>Filtros analíticos</h2>
+        <div class="control-grid">
+          <div class="control-group">
+            <label for="salaryRange">Faixa salarial</label>
+            <select id="salaryRange">
+              <option value="all">Todas</option>
+              <option value="lt1500">Até R$ 1,5 mil</option>
+              <option value="1500-2500">R$ 1,5–2,5 mil</option>
+              <option value="2500-5000">R$ 2,5–5 mil</option>
+              <option value="5000-10000">R$ 5–10 mil</option>
+              <option value="gt10000">Acima de R$ 10 mil</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="jobRange">Faixa de vínculos</label>
+            <select id="jobRange">
+              <option value="all">Todas</option>
+              <option value="lt100">Até 100</option>
+              <option value="100-1000">100–1.000</option>
+              <option value="1000-10000">1.000–10.000</option>
+              <option value="10000-100000">10.000–100.000</option>
+              <option value="gt100000">Acima de 100.000</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="salaryQuartile">Quartil salarial</label>
+            <select id="salaryQuartile">
+              <option value="all">Todos</option>
+              <option value="1">Q1</option>
+              <option value="2">Q2</option>
+              <option value="3">Q3</option>
+              <option value="4">Q4</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="jobQuartile">Quartil de vínculos</label>
+            <select id="jobQuartile">
+              <option value="all">Todos</option>
+              <option value="1">Q1</option>
+              <option value="2">Q2</option>
+              <option value="3">Q3</option>
+              <option value="4">Q4</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="jenksClass">Quebras naturais</label>
+            <select id="jenksClass">
+              <option value="all">Todas</option>
+              <option value="1">Classe 1</option>
+              <option value="2">Classe 2</option>
+              <option value="3">Classe 3</option>
+              <option value="4">Classe 4</option>
+              <option value="5">Classe 5</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="relationSelect">Situação salarial</label>
+            <select id="relationSelect">
+              <option value="all">Todas</option>
+              <option value="above">Acima da média nacional</option>
+              <option value="near">Próxima da média nacional</option>
+              <option value="below">Abaixo da média nacional</option>
+              <option value="lt50">Abaixo de 50% da média</option>
+              <option value="50-75">Entre 50% e 75%</option>
+              <option value="75-100">Entre 75% e 100%</option>
+            </select>
+          </div>
+        </div>
+        <button id="resetFilters" class="ghost-btn full">Limpar filtros</button>
+      </section>
 
-      <label>Nível CNAE de análise
-        <select id="filterNivel">
-          <option value="secao">Seção</option>
-          <option value="divisao">Divisão</option>
-          <option value="grupo">Grupo</option>
-          <option value="classe">Classe</option>
-          <option value="subclasse" selected>Subclasse</option>
-        </select>
-      </label>
+      <section class="filter-card">
+        <h2>Ranking e priorização</h2>
+        <div class="control-grid">
+          <div class="control-group">
+            <label for="topN">Itens nos rankings</label>
+            <select id="topN">
+              <option value="10">Top 10</option>
+              <option value="20" selected>Top 20</option>
+              <option value="50">Top 50</option>
+              <option value="9999">Todos</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="colorMode">Cor dos gráficos</label>
+            <select id="colorMode">
+              <option value="relation" selected>Relação com média</option>
+              <option value="quartile">Quartil salarial</option>
+              <option value="classificacao">Classificação analítica</option>
+              <option value="secao">Seção CNAE</option>
+              <option value="jenks">Jenks</option>
+            </select>
+          </div>
+        </div>
+        <div class="weights">
+          <label>Salário relativo <span id="wSalaryLabel"></span></label>
+          <input type="range" id="wSalary" min="0" max="100" value="35">
+          <label>Vínculos <span id="wJobsLabel"></span></label>
+          <input type="range" id="wJobs" min="0" max="100" value="25">
+          <label>Massa salarial <span id="wMassLabel"></span></label>
+          <input type="range" id="wMass" min="0" max="100" value="25">
+          <label>Distância positiva <span id="wDistanceLabel"></span></label>
+          <input type="range" id="wDistance" min="0" max="100" value="15">
+        </div>
+      </section>
 
-      <div class="filter-group">
-        <p>Seleção encadeada da CNAE</p>
-        <label>Seção
-          <select id="filterSecao"></select>
-        </label>
-        <label>Divisão
-          <select id="filterDivisao"></select>
-        </label>
-        <label>Grupo
-          <select id="filterGrupo"></select>
-        </label>
-        <label>Classe
-          <select id="filterClasse"></select>
-        </label>
-        <label>Subclasse
-          <select id="filterSubclasse"></select>
-        </label>
-      </div>
-
-      <label>Faixa salarial
-        <select id="filterSalario">
-          <option value="all">Todas</option>
-          <option value="above_mean">Acima da referência nacional</option>
-          <option value="075_100">Entre 75% e 100% da referência</option>
-          <option value="050_075">Entre 50% e 75% da referência</option>
-          <option value="below_050">Abaixo de 50% da referência</option>
-          <option value="q4">4º quartil salarial</option>
-          <option value="q1">1º quartil salarial</option>
-        </select>
-      </label>
-
-      <label>Classe de vínculos
-        <select id="filterVinculos">
-          <option value="all">Todas</option>
-          <option value="q4">Alto peso no emprego (4º quartil)</option>
-          <option value="upper_half">Acima da mediana de vínculos</option>
-          <option value="q1">Baixo peso no emprego (1º quartil)</option>
-        </select>
-      </label>
-
-      <label>Critério de classificação visual
-        <select id="filterCriterio">
-          <option value="quartis">Quartis</option>
-          <option value="decis">Decis</option>
-          <option value="jenks">Quebras naturais de Jenks</option>
-          <option value="media">Acima/abaixo da referência nacional</option>
-          <option value="mediana">Acima/abaixo da mediana das atividades</option>
-        </select>
-      </label>
-
-      <label>Ranking
-        <select id="filterRankingMode">
-          <option value="top">Maiores remunerações</option>
-          <option value="bottom">Menores remunerações</option>
-          <option value="priority">Maior índice de priorização</option>
-          <option value="links">Maior número de vínculos</option>
-          <option value="mass">Maior massa salarial</option>
-        </select>
-      </label>
-
-      <label>Quantidade no ranking
-        <select id="filterTopN">
-          <option value="10">Top 10</option>
-          <option value="20" selected>Top 20</option>
-          <option value="50">Top 50</option>
-          <option value="9999">Todas</option>
-        </select>
-      </label>
-
-      <div class="weights">
-        <h3>Pesos do índice exploratório</h3>
-        <label>Salário relativo <output id="outPesoSalario">35</output>
-          <input id="pesoSalario" type="range" min="0" max="100" value="35" />
-        </label>
-        <label>Vínculos <output id="outPesoVinculos">25</output>
-          <input id="pesoVinculos" type="range" min="0" max="100" value="25" />
-        </label>
-        <label>Massa salarial <output id="outPesoMassa">25</output>
-          <input id="pesoMassa" type="range" min="0" max="100" value="25" />
-        </label>
-        <label>Distância da média <output id="outPesoDistancia">15</output>
-          <input id="pesoDistancia" type="range" min="0" max="100" value="15" />
-        </label>
-        <p class="muted">O índice é apenas apoio exploratório. Não substitui análise setorial, territorial, de encadeamentos, externalidades e sustentabilidade.</p>
-      </div>
+      <section class="method-note">
+        <strong>Nota metodológica.</strong>
+        A base contém remuneração mediana nominal mensal. Para níveis agregados da CNAE, o salário exibido é calculado como
+        soma(remuneração × vínculos) / soma(vínculos), evitando média simples entre atividades de escalas distintas.
+      </section>
     </aside>
 
     <main class="content">
-      <section class="notice">
-        <strong>Nota metodológica:</strong> a base fornecida contém remuneração mediana nominal por subclasse. Nas agregações para níveis superiores da CNAE, o dashboard usa média ponderada por vínculos da mediana das atividades disponíveis. Portanto, os agregados devem ser lidos como aproximações da remuneração típica ponderada, não como mediana estatística recalculada a partir dos microdados.
-      </section>
-
-      <section id="cards" class="cards" aria-label="Indicadores sintéticos"></section>
-
-      <section class="policy-card">
+      <header class="topbar">
         <div>
-          <p class="eyebrow">Bloco interpretativo</p>
-          <h2>Leitura para políticas públicas</h2>
+          <div class="eyebrow">Plataforma analítica estática • GitHub Pages</div>
+          <h2>Salários formais por atividade econômica</h2>
+          <p class="muted">
+            Fonte: RAIS 2024 agregada por subclasse CNAE. Indicador salarial principal: remuneração mediana nominal mensal.
+          </p>
         </div>
-        <div id="policyReading" class="policy-reading"></div>
-      </section>
+        <div class="topbar-actions">
+          <button id="exportFiltered" class="primary-btn">Exportar tabela CSV</button>
+          <button id="downloadPriority" class="secondary-btn">Baixar ranking de priorização</button>
+        </div>
+      </header>
 
-      <section class="grid two">
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Ranking por atividade</h2>
-            <span class="hint">Salário, vínculos, massa ou índice</span>
-          </div>
-          <div id="chartRanking" class="chart tall"></div>
-        </article>
+      <section class="kpi-grid" id="kpiGrid"></section>
 
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Dispersão salário × vínculos</h2>
-            <span class="hint">Bolha proporcional à massa salarial</span>
-          </div>
-          <div id="chartScatter" class="chart tall"></div>
-        </article>
-      </section>
-
-      <section class="grid two">
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Distribuição salarial por grupo</h2>
-            <span class="hint">Boxplot sintético e outliers</span>
-          </div>
-          <div id="chartBoxplot" class="chart"></div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Histograma da remuneração</h2>
-            <span class="hint">Concentração por faixas salariais</span>
-          </div>
-          <div id="chartHistogram" class="chart"></div>
-        </article>
-      </section>
-
-      <section class="grid two">
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Treemap da massa salarial</h2>
-            <span class="hint">Tamanho: massa; cor: salário relativo</span>
-          </div>
-          <div id="chartTreemap" class="chart treemap"></div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Participação 100%</h2>
-            <span class="hint">Vínculos e massa salarial por seção</span>
-          </div>
-          <div id="chartStacked" class="chart"></div>
-        </article>
-      </section>
-
-      <section class="grid two">
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Matriz de priorização</h2>
-            <span class="hint">Quadrantes: salário relativo × participação nos vínculos</span>
-          </div>
-          <div id="chartMatrix" class="chart tall"></div>
-        </article>
-
-        <article class="panel stats-panel">
-          <div class="panel-header">
-            <h2>Estatísticas de dispersão</h2>
-            <span class="hint">Distribuição entre atividades do nível selecionado</span>
-          </div>
-          <div id="statsBox" class="stats-grid"></div>
-        </article>
-      </section>
-
-      <section class="panel table-panel">
-        <div class="panel-header table-tools">
+      <section class="panel-card reading-card">
+        <div class="panel-header">
           <div>
-            <h2>Tabela analítica</h2>
-            <span class="hint">Ordene, pesquise e exporte a seleção filtrada</span>
+            <h3>Leitura para políticas públicas</h3>
+            <p class="muted">Síntese automática da seleção atual, sem transformar rankings em critério definitivo de elegibilidade.</p>
           </div>
-          <div class="table-actions">
-            <input id="tableSearch" type="search" placeholder="Buscar CNAE, descrição, seção..." />
-            <button id="btnExportTable" class="btn secondary">Exportar tabela CSV</button>
-          </div>
+          <span id="selectionBadge" class="badge">Sem foco específico</span>
         </div>
-        <div id="tableInfo" class="table-info"></div>
-        <div class="table-wrap">
-          <table id="dataTable">
-            <thead></thead>
-            <tbody></tbody>
-          </table>
-        </div>
+        <div id="policyReading" class="reading-text"></div>
       </section>
 
-      <section class="methodology">
-        <h2>Cuidados metodológicos</h2>
-        <ul>
-          <li>Remuneração média ou mediana não mede sozinha valor adicionado da atividade.</li>
-          <li>Atividades com salários altos podem ter baixo número de vínculos e pequena escala territorial.</li>
-          <li>Atividades com muitos vínculos podem ter salários baixos, mas alta relevância social e ocupacional.</li>
-          <li>A massa salarial aproxima a importância econômica da atividade no mercado de trabalho formal.</li>
-          <li>A priorização de políticas públicas deve combinar remuneração, escala, aderência territorial, encadeamentos produtivos, inovação, sustentabilidade, concentração de mercado e objetivos estratégicos.</li>
-          <li>Resultados baseados na RAIS capturam apenas vínculos formais.</li>
-        </ul>
+      <nav class="tabs" aria-label="Navegação de gráficos">
+        <button class="tab active" data-tab="overview">Visão geral</button>
+        <button class="tab" data-tab="distribution">Dispersão</button>
+        <button class="tab" data-tab="priority">Priorização</button>
+        <button class="tab" data-tab="table">Tabela</button>
+        <button class="tab" data-tab="method">Metodologia</button>
+      </nav>
+
+      <section id="tab-overview" class="tab-panel active">
+        <div class="two-col">
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Ranking por remuneração</h3>
+                <p class="muted">Barras horizontais. Clique em uma atividade para destacá-la na tabela.</p>
+              </div>
+            </div>
+            <div id="salaryRanking" class="chart chart-lg"></div>
+          </article>
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Dispersão salário × vínculos</h3>
+                <p class="muted">Bolhas proporcionais à massa salarial estimada.</p>
+              </div>
+            </div>
+            <div id="scatterChart" class="chart chart-lg"></div>
+          </article>
+        </div>
+
+        <div class="two-col">
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Ranking por massa salarial</h3>
+                <p class="muted">Volume aproximado de renda formal mensal por atividade.</p>
+              </div>
+            </div>
+            <div id="massRanking" class="chart chart-md"></div>
+          </article>
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Ranking por vínculos</h3>
+                <p class="muted">Escala ocupacional formal no nível CNAE selecionado.</p>
+              </div>
+            </div>
+            <div id="jobRanking" class="chart chart-md"></div>
+          </article>
+        </div>
+
+        <article class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h3>Treemap hierárquico</h3>
+              <p class="muted">Tamanho por massa salarial; cor por salário relativo à média nacional.</p>
+            </div>
+            <select id="treemapMetric">
+              <option value="massa_salarial" selected>Massa salarial</option>
+              <option value="vinculos">Vínculos</option>
+            </select>
+          </div>
+          <div id="treemapChart" class="chart chart-lg"></div>
+        </article>
+      </section>
+
+      <section id="tab-distribution" class="tab-panel">
+        <article class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h3>Dispersão salarial entre atividades</h3>
+              <p class="muted">Estatísticas calculadas para o conjunto filtrado e nível CNAE selecionado.</p>
+            </div>
+          </div>
+          <div id="dispersionStats" class="stats-grid"></div>
+        </article>
+
+        <div class="two-col">
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Histograma da remuneração</h3>
+                <p class="muted">Concentração de atividades por faixa de salário.</p>
+              </div>
+              <select id="histMode">
+                <option value="salario" selected>Salário absoluto</option>
+                <option value="relativo">Salário relativo</option>
+              </select>
+            </div>
+            <div id="histogramChart" class="chart chart-md"></div>
+          </article>
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Boxplot por grupo de comparação</h3>
+                <p class="muted">Mediana, quartis e outliers de remuneração.</p>
+              </div>
+              <select id="boxLevel">
+                <option value="secao" selected>Seção</option>
+                <option value="divisao">Divisão</option>
+                <option value="grupo">Grupo</option>
+                <option value="classe">Classe</option>
+              </select>
+            </div>
+            <div id="boxplotChart" class="chart chart-lg"></div>
+          </article>
+        </div>
+
+        <article class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h3>Composição por grupos CNAE</h3>
+              <p class="muted">Participação relativa nos vínculos ou na massa salarial.</p>
+            </div>
+            <select id="compositionMetric">
+              <option value="vinculos" selected>Vínculos</option>
+              <option value="massa_salarial">Massa salarial</option>
+            </select>
+          </div>
+          <div id="compositionChart" class="chart chart-md"></div>
+        </article>
+      </section>
+
+      <section id="tab-priority" class="tab-panel">
+        <div class="two-col">
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Matriz de priorização</h3>
+                <p class="muted">Quadrantes combinando salário relativo e participação nos vínculos.</p>
+              </div>
+            </div>
+            <div id="priorityMatrix" class="chart chart-lg"></div>
+          </article>
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Dispersão com quebras naturais</h3>
+                <p class="muted">Classificação salarial por Jenks, quartis ou decis.</p>
+              </div>
+              <select id="breakMethod">
+                <option value="jenks" selected>Jenks</option>
+                <option value="quartile">Quartis</option>
+                <option value="decile">Decis</option>
+              </select>
+            </div>
+            <div id="breaksScatter" class="chart chart-lg"></div>
+          </article>
+        </div>
+
+        <article class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h3>Ranking exploratório de priorização</h3>
+              <p class="muted">Recalculado com os pesos definidos no painel lateral.</p>
+            </div>
+          </div>
+          <div id="priorityRanking" class="chart chart-lg"></div>
+        </article>
+      </section>
+
+      <section id="tab-table" class="tab-panel">
+        <article class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h3>Tabela analítica interativa</h3>
+              <p class="muted">Busca, ordenação, classificação e exportação em CSV.</p>
+            </div>
+            <div class="table-actions">
+              <input id="tableSearch" type="search" placeholder="Buscar código, descrição ou seção..." />
+              <select id="classificationFilter">
+                <option value="all">Todas as classificações</option>
+              </select>
+              <button id="clearFocus" class="ghost-btn">Limpar foco</button>
+            </div>
+          </div>
+          <div id="tableSummary" class="table-summary"></div>
+          <div class="table-wrap">
+            <table id="analyticTable">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="tab-method" class="tab-panel">
+        <article class="panel-card method-panel">
+          <h3>Alertas metodológicos</h3>
+          <ol>
+            <li>A remuneração mediana não mede diretamente valor adicionado.</li>
+            <li>Atividades com remuneração alta podem ter baixo número de vínculos.</li>
+            <li>Atividades com muitos vínculos podem pagar salários baixos, mas ter relevância social e ocupacional.</li>
+            <li>A massa salarial aproxima a importância econômica da atividade no mercado formal de trabalho.</li>
+            <li>A RAIS cobre vínculos formais, não captando informalidade.</li>
+            <li>A priorização de políticas públicas deve considerar encadeamentos produtivos, inovação, sustentabilidade, externalidades, concentração de mercado, aderência territorial e objetivos estratégicos.</li>
+            <li>Os rankings são instrumentos exploratórios, não critérios automáticos de elegibilidade.</li>
+          </ol>
+          <h3>Cálculos centrais</h3>
+          <pre><code>salario_relativo = salario_atividade / salario_ponderado_nacional
+diferenca_abs = salario_atividade - salario_ponderado_nacional
+diferenca_pct = ((salario_atividade / salario_ponderado_nacional) - 1) * 100
+massa_salarial = salario_atividade * vinculos_atividade
+share_vinculos = vinculos_atividade / vinculos_total
+share_massa_salarial = massa_salarial_atividade / massa_salarial_total</code></pre>
+          <p>
+            Para agregações da CNAE, o dashboard usa <strong>salário ponderado por vínculos</strong>:
+            soma(salário × vínculos) / soma(vínculos). Como o salário de entrada é mediano por subclasse, a agregação é uma aproximação ponderada, não uma mediana recalculada a partir dos microdados individuais.
+          </p>
+        </article>
       </section>
     </main>
   </div>
 
-  <div id="tooltip" class="tooltip" role="status"></div>
+  <div id="tooltip" class="tooltip hidden"></div>
+  <div id="loading" class="loading-overlay">Carregando dashboard…</div>
+
   <script src="data.js"></script>
-  <script src="assets/app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

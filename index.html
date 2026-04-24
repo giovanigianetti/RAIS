@@ -12,7 +12,7 @@
       <div class="eyebrow">RAIS • mercado de trabalho formal</div>
       <h1>Dashboard Salários 2024</h1>
       <p class="muted">
-        Avaliação da remuneração mediana por atividade econômica para diagnósticos de diversificação produtiva e políticas públicas.
+        Avaliação da remuneração média nominal por atividade econômica para diagnósticos de diversificação produtiva e políticas públicas.
       </p>
 
       <section class="filter-card">
@@ -39,7 +39,7 @@
         <div class="control-group">
           <label for="salaryIndicator">Indicador salarial</label>
           <select id="salaryIndicator">
-            <option value="remuneracao_mediana" selected>Remuneração mediana nominal</option>
+            <option value="remuneracao_media" selected>Remuneração média nominal</option>
           </select>
           <small>Não há média salarial na base enviada. As agregações usam ponderação por vínculos.</small>
         </div>
@@ -178,7 +178,7 @@
 
       <section class="method-note">
         <strong>Nota metodológica.</strong>
-        A base contém remuneração mediana nominal mensal. Para níveis agregados da CNAE, o salário exibido é calculado como
+        A base contém remuneração média nominal mensal. Para níveis agregados da CNAE, o salário exibido é calculado como
         soma(remuneração × vínculos) / soma(vínculos), evitando média simples entre atividades de escalas distintas.
       </section>
     </aside>
@@ -189,7 +189,7 @@
           <div class="eyebrow">Plataforma analítica estática • GitHub Pages</div>
           <h2>Salários formais por atividade econômica</h2>
           <p class="muted">
-            Fonte: RAIS 2024 agregada por subclasse CNAE. Indicador salarial principal: remuneração mediana nominal mensal.
+            Fonte: RAIS 2024 agregada por subclasse CNAE. Indicador salarial principal: remuneração média nominal mensal.
           </p>
         </div>
         <div class="topbar-actions">
@@ -401,7 +401,7 @@
         <article class="panel-card method-panel">
           <h3>Alertas metodológicos</h3>
           <ol>
-            <li>A remuneração mediana não mede diretamente valor adicionado.</li>
+            <li>A remuneração média nominal não mede diretamente valor adicionado.</li>
             <li>Atividades com remuneração alta podem ter baixo número de vínculos.</li>
             <li>Atividades com muitos vínculos podem pagar salários baixos, mas ter relevância social e ocupacional.</li>
             <li>A massa salarial aproxima a importância econômica da atividade no mercado formal de trabalho.</li>
@@ -418,7 +418,7 @@ share_vinculos = vinculos_atividade / vinculos_total
 share_massa_salarial = massa_salarial_atividade / massa_salarial_total</code></pre>
           <p>
             Para agregações da CNAE, o dashboard usa <strong>salário ponderado por vínculos</strong>:
-            soma(salário × vínculos) / soma(vínculos). Como o salário de entrada é mediano por subclasse, a agregação é uma aproximação ponderada, não uma mediana recalculada a partir dos microdados individuais.
+            soma(salário × vínculos) / soma(vínculos). Como o salário de entrada é a remuneração média nominal por subclasse, a agregação para níveis superiores é uma média ponderada por vínculos, consistente com a base agregada.
           </p>
         </article>
       </section>

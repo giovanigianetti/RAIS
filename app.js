@@ -18,8 +18,8 @@
     classe_desc: String(d.classe_desc || ""),
     subclasse: String(d.subclasse || d.cnae_codigo || "").padStart(7, "0"),
     subclasse_desc: String(d.subclasse_desc || ""),
-    salario: Number(d.remuneracao_mediana || 0),
-    remuneracao_mediana: Number(d.remuneracao_mediana || 0),
+    salario: Number(d.remuneracao_media || 0),
+    remuneracao_media: Number(d.remuneracao_media || 0),
     vinculos: Number(d.vinculos || 0),
     massa_salarial: Number(d.massa_salarial || 0)
   })).filter(d => d.salario > 0 && d.vinculos > 0);
@@ -614,7 +614,7 @@
       svg.appendChild(c);
     });
     svg.appendChild(svgEl("text", {x:(w+margin.left-margin.right)/2,y:h-15,"text-anchor":"middle",class:"chart-title-small"}, "Vínculos formais em escala logarítmica"));
-    svg.appendChild(svgEl("text", {x:18,y:(h-margin.bottom+margin.top)/2,transform:`rotate(-90 18 ${(h-margin.bottom+margin.top)/2})`,"text-anchor":"middle",class:"chart-title-small"}, "Remuneração mediana mensal"));
+    svg.appendChild(svgEl("text", {x:18,y:(h-margin.bottom+margin.top)/2,transform:`rotate(-90 18 ${(h-margin.bottom+margin.top)/2})`,"text-anchor":"middle",class:"chart-title-small"}, "Remuneração média nominal mensal"));
     container.appendChild(svg);
   }
 
